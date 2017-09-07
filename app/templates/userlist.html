@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    {% if title %}
+    <title>{{ title }} - Lazy Gang's Flask Demo</title>
+    {% else %}
+    <title>Welcome to the world of Lazy Gang</title>
+    {% endif %}
+</head>
+
+<body>
+    {% for user in users %}
+    <div>
+        <p> {{ user.name }}</b></p>
+    </div>
+    {% endfor %}
+</body>
+
+</html>
