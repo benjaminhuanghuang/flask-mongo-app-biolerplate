@@ -3,6 +3,6 @@
 
 /venv3
 
-.pyc
+*.pyc
 /tmp
 __pycache__
