@@ -2,3 +2,4 @@ flask
 flask-script
 flask-pymongo
 flask-bootstrap
+flask-wtf
