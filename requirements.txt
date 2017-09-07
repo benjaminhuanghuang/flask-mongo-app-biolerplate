@@ -1,5 +1,5 @@
 flask
 flask-script
-flask-pymongo
+flask-mongoengine  # ORM
 flask-bootstrap
 flask-wtf

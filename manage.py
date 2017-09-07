@@ -1,10 +1,19 @@
 import os
 from app import create_app
-from flask.ext.script import Manager
+from flask.ext.script import Manager, Server
+
 # Flask-Script is an extension that adds command line options to Flask
 
 app = create_app('default')
 manager = Manager(app)
+
+manager.add_comment("runserver", Server(
+    use_debugger=True,
+    use_reload=True,
+    host=os.getenv('IP', '0.0.0.0'),
+    port=int(os.getenv('PORT', 5000))
+))
+
 
 @manager.command
 def test():
