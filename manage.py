@@ -3,16 +3,16 @@ import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import create_app
-from flask.ext.script import Manager, Server
+from flask_script import Manager, Server
 
 # Flask-Script is an extension that adds command line options to Flask
 
 app = create_app('default')
 manager = Manager(app)
 
-manager.add_comment("runserver", Server(
+manager.add_command("runserver", Server(
     use_debugger=True,
-    use_reload=True,
+    use_reloader=True,
     host=os.getenv('IP', '0.0.0.0'),
     port=int(os.getenv('PORT', 5010))
 ))

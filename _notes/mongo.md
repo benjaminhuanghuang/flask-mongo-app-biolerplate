@@ -1,2 +1,27 @@
 ## Use mongod.conf
+    ```
+    systemLog:
+       destination: file
+       path: "/home/ubuntu/log/mongod.log"
+       logAppend: true
+    storage:
+       journal:
+          enabled: false
+       dbPath: "/home/ubuntu/data"
+    processManagement:
+       fork: true
+    net:
+       bindIp: 0.0.0.0
+       port: 27017
+       http:
+          enabled: true
+          RESTInterfaceEnabled: true
+   ```
+   
+## mongod restart script
+    ```
+    rm -fr ~/data/mongod.lock
+    mongod -f mongod.conf
+    ```
+    
     

@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 bootstrap = Bootstrap()
+
+from config import config  # config.py in ../
 #
-from config import config
+
 
 def create_app(config_name):
     """
@@ -26,7 +28,7 @@ def create_app(config_name):
 
     # register our blueprints
 
-    from user.views import user_app
+    from .user.views import user_app
     app.register_blueprint(user_app)
 
     return app

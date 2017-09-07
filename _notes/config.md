@@ -1,4 +1,7 @@
-## Using from_pyfile
+## Reference
+    - https://damyanon.net/flask-series-configuration/
+    
+## File based config
     config.py
     ```
     SECRET_KEY = 'you-will-never-guess'
@@ -24,12 +27,14 @@
     
     ```
 
-## from_object
+## Object based config
     In app
     ```
     from config import config
     
     app.config.from_object(config[config_name])
+    
+    app.config.update(dict())
     ```
     
     In config.py
@@ -56,4 +61,9 @@
     ```
     return create_app('test')
     
+    ```
+    
+## Env vars based config
+    ```
+    app.config.from_envvar('FLASK_CONFIG_FILE')
     ```
