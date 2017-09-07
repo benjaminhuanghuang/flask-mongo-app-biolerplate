@@ -3,13 +3,14 @@
 ## Reference
     -Advanced Scalable Python Web Development Using Flask
         - https://www.udemy.com/advanced-python-flask
+        - https://github.com/fromzeroedu/flaskbook
 
 ## Best Practice
   - Use mongodb and mongoose 
     - Split mongoose setup into a separate file
 
   - Use app factory pattern and manager for convenience of testing
-  
+    
   - Use config pattern  
     - derive different config from base config
     - mail config

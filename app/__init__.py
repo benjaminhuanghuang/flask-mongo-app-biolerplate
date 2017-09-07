@@ -1,8 +1,8 @@
 from flask import Flask
-from config import config
-
-from flask.ext.bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap
 bootstrap = Bootstrap()
+#
+from config import config
 
 def create_app(config_name):
     """
@@ -19,17 +19,14 @@ def create_app(config_name):
     app = Flask(__name__, template_folder="templates", static_folder="static")
 
     app.config.from_object(config[config_name])
+    # customize app.config
+    # app.config['option']= "option"
 
     bootstrap.init_app(app)
 
     # register our blueprints
-    from routes.main import main
-    app.register_blueprint(main)  # regist URL
 
-    from routes.user import user
-    app.register_blueprint(user)
-
-    from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+    from user.views import user_app
+    app.register_blueprint(user_app)
 
     return app

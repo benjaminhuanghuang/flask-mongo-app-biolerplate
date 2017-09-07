@@ -1,4 +1,7 @@
-import os
+import os, sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from app import create_app
 from flask.ext.script import Manager, Server
 
@@ -11,7 +14,7 @@ manager.add_comment("runserver", Server(
     use_debugger=True,
     use_reload=True,
     host=os.getenv('IP', '0.0.0.0'),
-    port=int(os.getenv('PORT', 5000))
+    port=int(os.getenv('PORT', 5010))
 ))
 
 
