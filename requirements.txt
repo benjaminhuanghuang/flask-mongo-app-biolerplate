@@ -3,3 +3,4 @@ flask-script
 flask-mongoengine  # ORM
 flask-bootstrap
 flask-wtf
+bleach   # clean html string

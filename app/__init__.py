@@ -2,11 +2,12 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 bootstrap = Bootstrap()
 
+from flask_mongoengine import MongoEngine
+db = MongoEngine()
+
 from config import config  # config.py in ../
-#
 
-
-def create_app(config_name):
+def create_app(config_name='default'):
     """
     An flask application factory, as explained here:
     http://flask.pocoo.org/docs/patterns/appfactories/
@@ -25,6 +26,7 @@ def create_app(config_name):
     # app.config['option']= "option"
 
     bootstrap.init_app(app)
+    db.init_app(app)
 
     # register our blueprints
 
