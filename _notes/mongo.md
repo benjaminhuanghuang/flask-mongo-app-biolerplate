@@ -45,10 +45,16 @@
     ```
    - pre save hook 
     ```
-    @classmethod
-    def pre_save(cls, sender, document, **kwargs):
-        document.username = document.username.lower()
-        document.email = document.email.lower()
+    from mongoengine import signals
+
+    class User(db.Document):
+        @classmethod
+        def pre_save(cls, sender, document, **kwargs):
+            document.username = document.username.lower()
+            document.email = document.email.lower()
+    
+    
+    signals.pre_save.connect(User.pre_save, sender=User)
     ```
     
    - add index

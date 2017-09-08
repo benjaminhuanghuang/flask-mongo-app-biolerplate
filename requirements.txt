@@ -5,3 +5,4 @@ flask-wtf
 py-bcrypt   # encrypt user password
 bleach   # clean html string
 flask-testing
+blinker

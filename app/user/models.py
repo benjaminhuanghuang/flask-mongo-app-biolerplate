@@ -1,3 +1,5 @@
+from mongoengine import signals
+
 from app import db
 from ..utilities.timing import utc_now_ts
 
@@ -22,3 +24,5 @@ class User(db.Document):
         document.username = document.username.lower()
         document.email = document.email.lower()
 
+
+signals.pre_save.connect(User.pre_save, sender=User)

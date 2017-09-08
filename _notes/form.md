@@ -8,7 +8,13 @@
     https://flask-wtf.readthedocs.io/en/stable/
     git://github.com/lepture/flask-wtf.git
     ```
-
+## BaseFrom
+    ```
+    class BaseUserForm(FlaskForm):
+    
+        
+    class RegisterForm(BaseUserForm):
+    ```
 ## Validation
     ```
     from wtforms import validators
