@@ -16,7 +16,7 @@ class UserTest(unittest.TestCase):
 
     def tearDown(self):
         db = _get_db()
-        db.client.drop_database(db)
+        # db.client.drop_database(db)
 
     def user_dict(self):
         return dict(
@@ -33,7 +33,7 @@ class UserTest(unittest.TestCase):
         rv = self.test_client.post('/register', data=self.user_dict(), follow_redirects=True)
         assert User.objects.filter(username=self.user_dict()['username']).count() == 1
 
-    @unittest.skip("skipping")
+    # @unittest.skip("skipping")
     def test_register_user_invalid_char(self):
         # Invalid username characters
         user2 = self.user_dict()
