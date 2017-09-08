@@ -45,6 +45,7 @@
     ```
    - pre save hook 
     ```
+    # Signal support is provided by the excellent blinker library.
     from mongoengine import signals
 
     class User(db.Document):
@@ -56,7 +57,10 @@
     
     signals.pre_save.connect(User.pre_save, sender=User)
     ```
-    
+        - troubleshooting 
+            In test cases(unit-testing), Django pre_save signal can not be caught
+
+
    - add index
    ```
    meta = {

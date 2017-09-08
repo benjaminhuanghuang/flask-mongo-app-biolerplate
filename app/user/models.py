@@ -1,4 +1,4 @@
-from mongoengine import signals
+from mongoengine import signals # Signal support is provided by the excellent blinker library.
 
 from app import db
 from ..utilities.timing import utc_now_ts
@@ -15,14 +15,16 @@ class User(db.Document):
     change_configuration = db.DictField(db_field="change_config")
     avatar = db.StringField(db_field="avatar", default=None)
 
+    @classmethod
+    def pre_save(cls, sender, document, **kwargs):
+        print("pre_save...")
+        document.username = document.username.lower()
+        document.email = document.email.lower()
+
     meta = {
         'indexes': ['username', 'email', '-created_at']
     }
 
-    @classmethod
-    def pre_save(cls, sender, document, **kwargs):
-        document.username = document.username.lower()
-        document.email = document.email.lower()
 
 
 signals.pre_save.connect(User.pre_save, sender=User)

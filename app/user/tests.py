@@ -42,6 +42,7 @@ class UserTest(unittest.TestCase):
         rv = self.test_client.post('/register', data=user2, follow_redirects=True)
         assert "Invalid username" in str(rv.data)
 
+    def test_register_user_lowercase(self):
         # Is username being saved in lowercase?
         user3 = self.user_dict()
         user3['username'] = "TestUser"

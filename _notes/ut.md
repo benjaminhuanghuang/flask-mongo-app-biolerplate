@@ -28,6 +28,14 @@
     ```
     
 ## Test flask app
+    change the config
+    ```
+     WTF_CSRF_ENABLED = False    # for testing
+    ```
+    
+    Create app with testing config
+    ```
     def setUp(self):
-        self.flask_app = self.create_app()
+        self.flask_app = self.create_app('test')
         self.test_client = self.flask_app.test_client()
+    ```
