@@ -13,6 +13,10 @@ class User(db.Document):
     change_configuration = db.DictField(db_field="change_config")
     avatar = db.StringField(db_field="avatar", default=None)
 
+    meta = {
+        'indexes': ['username', 'email', '-created_at']
+    }
+
     @classmethod
     def pre_save(cls, sender, document, **kwargs):
         document.username = document.username.lower()

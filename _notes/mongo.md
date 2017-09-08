@@ -40,3 +40,11 @@
         document.username = document.username.lower()
         document.email = document.email.lower()
     ```
+    
+   - add index
+   ```
+   meta = {
+        'indexes': ['username', 'email', '-created']
+    }
+    
+   ```

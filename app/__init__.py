@@ -1,6 +1,4 @@
 from flask import Flask
-from flask_bootstrap import Bootstrap
-bootstrap = Bootstrap()
 
 from flask_mongoengine import MongoEngine
 db = MongoEngine()
@@ -25,7 +23,6 @@ def create_app(config_name='default'):
     # customize app.config
     # app.config['option']= "option"
 
-    bootstrap.init_app(app)
     db.init_app(app)
 
     # register our blueprints

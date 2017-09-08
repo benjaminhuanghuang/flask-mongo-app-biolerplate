@@ -16,3 +16,16 @@
       <h1>Hello, Bootstrap</h1>
     {% endblock %}
     ```
+## Template macro
+    ```
+    {% macro render_field(field) %}
+  
+    {% endmacro %}
+    ```
+    using macro
+    ```
+    {% from "_formhelpers.html" import render_field %}
+      
+    {{ render_field(form.username, class='form-control') }}
+     
+    ```

@@ -1,6 +1,6 @@
 flask
 flask-script
 flask-mongoengine  # ORM
-flask-bootstrap
 flask-wtf
+py-bcrypt   # encrypt user password
 bleach   # clean html string
