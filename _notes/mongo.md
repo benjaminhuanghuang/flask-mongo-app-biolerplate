@@ -68,3 +68,13 @@
     }
     
    ```
+   
+   - Virtual property
+    ```
+    class Message(db.Document):
+        text = db.StringField(db_field="t", max_length=1024)
+       
+        @property
+        def text_linkified(self):
+            return linkify(self.text)
+    ```
