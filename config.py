@@ -30,7 +30,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SECRET_KEY = 'secret'
+    WTF_CSRF_ENABLED = False    # for testing
     MONGODB_SETTINGS = {
         'host': 'mongodb://localhost:27017/test-temp'
     }

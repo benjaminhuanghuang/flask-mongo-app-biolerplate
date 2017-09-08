@@ -18,6 +18,7 @@ class RegisterForm(FlaskForm):
         validators.DataRequired(),
         validators.length(min=4, max=25)
     ])
+
     password = PasswordField('New Password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords must match'),
@@ -26,10 +27,20 @@ class RegisterForm(FlaskForm):
     confirm = PasswordField('Repeat Password')
 
     def validate_username(form, field):
-        # check username in database
         if User.objects.filter(username=field.data).first():
             raise ValidationError("Username already exists")
 
     def validate_email(form, field):
         if User.objects.filter(email=field.data).first():
             raise ValidationError("Email is already in use")
+
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', [
+        validators.DataRequired(),
+        validators.length(min=4, max=25)
+    ])
+    password = PasswordField('Password', [
+        validators.DataRequired(),
+        validators.length(min=4, max=80)
+    ])
