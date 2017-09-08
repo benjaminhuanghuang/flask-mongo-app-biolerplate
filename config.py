@@ -1,11 +1,13 @@
 import os
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 't0p s3cr3t'
-    TALKS_PER_PAGE = 50
-    COMMENTS_PER_PAGE = 100
+    MONGODB_SETTINGS = {
+        'host': 'mongodb://admin:admin1234@ds119618.mlab.com:19618/db_todo'
+    }
 
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
@@ -19,21 +21,23 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    MONGODB_SETTINGS = {
+        'host': 'mongodb://localhost:27017/flask-app'
+    }
+
     MAIL_FLUSH_INTERVAL = 60  # one minute
 
 
 class TestingConfig(Config):
     TESTING = True
     SECRET_KEY = 'secret'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data-test.sqlite')
+    MONGODB_SETTINGS = {
+        'host': 'mongodb://localhost:27017/test-temp'
+    }
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+    MONGO_URI = 'mongodb://admin:admin1234@ds119618.mlab.com:19618/db_todo'
 
 
 config = {

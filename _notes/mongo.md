@@ -17,7 +17,17 @@
           enabled: true
           RESTInterfaceEnabled: true
     ```
-   
+## PyMongo Config
+    - https://flask-pymongo.readthedocs.io/en/latest/
+    
+    - MONGO_URI
+    - MONGO_HOST
+    - MONGO_PORT
+
+## Flask-mongoengine config
+    http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/
+    
+    
 ## mongod restart script
     ```
     rm -fr ~/data/mongod.lock

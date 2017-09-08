@@ -1,6 +1,7 @@
 {% macro render_field(field) %}
     <div class="form-group">
         {{ field.label }}
+        {# filde class = form-control applied by **kwargs#}
         {{ field(**kwargs)|safe }}
         {% if field.errors %}
             <ul class="text-danger">
