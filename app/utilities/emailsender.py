@@ -13,8 +13,8 @@ from email.mime.application import MIMEApplication
 
 def send_email(subject, recipients, bccs, body_html, body_text, attachment=None):
     # don't run this if we're running a test or setting is False
-    # if current_app.config.get('TESTING'):
-    #     return False
+    if current_app.config.get('TESTING'):
+        return False
 
     sender = current_app.config['MAIL_DEFAULT_SENDER'] #"Benjamin Huang <support@benjamin.com>"
     msgAlternative = MIMEMultipart('alternative')

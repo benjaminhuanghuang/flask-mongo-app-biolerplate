@@ -102,6 +102,7 @@ def edit():
                 if User.objects.filter(email=form.email.data.lower()).first():
                     error = "Email already exists"
                 else:
+                    # Confirm new email address
                     code = str(uuid.uuid4())
 
                     user.change_configuration = {

@@ -52,9 +52,10 @@ class UserTest(unittest.TestCase):
         assert User.objects.filter(username=user3['username'].lower()).count() == 1
 
     def test_register_user_confirm(self):
-        user3 = self.user_dict()
-        user3['username'] = "TestUser"
-        user3['email'] = "test2@example.com"
+        user = self.user_dict()
+        user['username'] = "testuser"
+        user['email'] = "test2@example.com"
+        rv = self.test_client.post('/register', data=user, follow_redirects=True)
         # confirm the user
         user = User.objects.get(username=self.user_dict()['username'])
         code = user.change_configuration.get('confirmation_code')
