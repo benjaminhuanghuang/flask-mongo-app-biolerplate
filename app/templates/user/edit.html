@@ -4,40 +4,44 @@
 
 {% block content %}
 
-{% include "navbar.html" %}
+    {% include "navbar.html" %}
 
-<div class="row">
+    <div class="row">
 
-  <div class="col-md-offset-3 col-md-6">
+        <div class="col-md-offset-3 col-md-6">
 
-    <h3>Edit Profile</h3>
+            <h3>Edit Profile</h3>
 
-    {% if error %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-    {% endif %}
+            {% if error %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endif %}
 
-    {% if message %}
-    <div class="alert alert-success" role="alert">{{ message }}</div>
-    {% endif %}
+            {% if message %}
+                <div class="alert alert-success" role="alert">{{ message }}</div>
+            {% endif %}
 
-    {% from "_formhelpers.html" import render_field %}
-    <form method="POST" action="{{ url_for('.edit')}}" role="form">
+            {% from "_formhelpers.html" import render_field %}
+            <form method="POST" action="{{ url_for('.edit') }}" role="form" enctype="multipart/form-data">
+                {% if user.profile_image %}
+                    <div class="thumbnail">
+                        <img src="{{ url_for('static', filename=user.profile_imgsrc('xlg')) }}" class="img-rounded">
+                    </div>
+                {% endif %}
+                {{ form.hidden_tag() }}
 
-      {{ form.hidden_tag() }}
+                {{ render_field(form.first_name, class='form-control') }}
+                {{ render_field(form.last_name, class='form-control') }}
 
-      {{ render_field(form.first_name, class='form-control') }}
-      {{ render_field(form.last_name, class='form-control') }}
+                {{ render_field(form.username, class='form-control') }}
+                {{ render_field(form.email, class='form-control') }}
 
-      {{ render_field(form.username, class='form-control') }}
-      {{ render_field(form.email, class='form-control') }}
+                {{ render_field(form.bio, maxlength="160", rows="3", class='form-control') }}
 
-      {{ render_field(form.bio, maxlength="160", rows="3", class='form-control') }}
+                <button type="submit" class="btn btn-default">Save</button>
 
-      <button type="submit" class="btn btn-default">Save</button>
+            </form>
 
-    </form>
+        </div>
 
-  </div>
-
-</div>
+    </div>
 {% endblock %}

@@ -4,3 +4,4 @@ flask-mongoengine
 Flask-WTF
 py-bcrypt
 blinker
+Wand

@@ -1,7 +1,9 @@
+import os
 from mongoengine import signals # Signal support is provided by the excellent blinker library.
-
+from flask import url_for
 from app import db
 from ..utilities.timing import utc_now_ts
+
 
 class User(db.Document):
     username = db.StringField(db_field="user_name", required=True, unique=True)
@@ -19,9 +21,11 @@ class User(db.Document):
 
     @classmethod
     def pre_save(cls, sender, document, **kwargs):
-        print("pre_save...")
         document.username = document.username.lower()
         document.email = document.email.lower()
+
+    def profile_imgsrc(self, size):
+        return os.path.join("images", 'user', '%s.%s.%s.png' % (self.id, self.avatar, size))
 
     meta = {
         'indexes': ['username', 'email', '-created_at']

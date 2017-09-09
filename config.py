@@ -21,6 +21,9 @@ class Config:
 
     HOSTNAME = "http://localhost:5010"    # used in the email send to user
 
+    STATIC_IMAGE_URL = "images"
+    UPLOAD_FOLDER = "/Users/hhuang/Documents/Ben/_BenGithub/flask-mongo-app-boilerplate/app/static/images"
+
 class DevelopmentConfig(Config):
     DEBUG = True
     MONGODB_SETTINGS = {
