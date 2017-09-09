@@ -208,7 +208,7 @@ class UserTest(unittest.TestCase):
             rv = c.get('/')
             assert session.get('username') == self.user_dict()['username']
 
-    @unittest.skip("skipping")
+    # @unittest.skip("skipping")
     def test_change_password(self):
         # create a user
         self.test_client.post('/register', data=self.user_dict())
@@ -239,6 +239,6 @@ class UserTest(unittest.TestCase):
             password='newpassword'
             ))
         # check the session is set
-        with self.app as c:
+        with self.test_client as c:
             rv = c.get('/')
             assert session.get('username') == self.user_dict()['username']
