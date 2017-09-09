@@ -80,7 +80,7 @@ def logout():
 def profile(username):
     edit_profile = False
     user = User.objects.filter(username=username).first()
-    if session.get('username') and user.username == session.get('username'):
+    if user and session.get('username') and user.username == session.get('username'):
         edit_profile = True
     if user:
         return render_template('user/profile.html', user=user, edit_profile=edit_profile)

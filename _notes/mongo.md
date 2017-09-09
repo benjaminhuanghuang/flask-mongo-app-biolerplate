@@ -34,6 +34,11 @@
     mongod -f mongod.conf
     ```
     
+## Mongo explain
+    If we do a MongoDB query and explain it and get the following: 
+    ("cursor" : "BasicCursor", "nscannedObjects" : 3,) , it means:
+    - The query had to got through 3 records to find the result.
+     
 ## Mongo model design
    - create model
     ```
@@ -78,3 +83,7 @@
         def text_linkified(self):
             return linkify(self.text)
     ```
+    
+    - Field with choice type 
+    
+    - Relation
