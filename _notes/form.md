@@ -51,3 +51,8 @@
     ```
 ##  Display validation error message
     
+
+## Display data in form 
+    ```
+    form.populate_obj(user)
+    ```

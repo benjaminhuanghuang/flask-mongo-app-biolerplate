@@ -102,7 +102,21 @@ def edit():
                 if User.objects.filter(email=form.email.data.lower()).first():
                     error = "Email already exists"
                 else:
-                    form.email.data = form.email.data.lower()
+                    code = str(uuid.uuid4())
+
+                    user.change_configuration = {
+                        "new_email": form.email.data.lower(),
+                        "confirmation_code": code
+                    }
+                    user.email_confirmed = False
+                    form.email.data = user.email
+                    message = "You will need to confirm the new email to complete this change"
+
+                    # email the user
+                    body_html = render_template('mail/user/change_email.html', user=user)
+                    body_text = render_template('mail/user/change_email.txt', user=user)
+                    send_email(user.change_configuration['new_email'], "Confirm your new email", body_html, body_text)
+
             if not error:
                 form.populate_obj(user)
                 user.save()
