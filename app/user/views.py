@@ -92,7 +92,7 @@ def edit():
     if user:
         form = EditForm(obj=user)
         if form.validate_on_submit():
-            if user.username != form.username.data:
+            if user.username != form.username.data.lower():
                 if User.objects.filter(username=form.username.data.lower()).first():
                     error = "Username already exists"
                 else:
@@ -116,15 +116,18 @@ def edit():
                     # email the user
                     body_html = render_template('mail/user/change_email.html', user=user)
                     body_text = render_template('mail/user/change_email.txt', user=user)
-                    send_email(user.change_configuration['new_email'], "Confirm your new email", body_html, body_text)
+                    send_email("Confirm your new email", user.change_configuration['new_email'], None,
+                               body_html, body_text, None)
 
             if not error:
                 form.populate_obj(user)
                 user.save()
-                message = "Profile updated"
+                if not message:  # Important! do not overwrite email confirm message
+                    message = "Profile updated"
         return render_template("user/edit.html", form=form, error=error, message=message)
     else:
         abort(404)
+
 
 # Response the confirm link in the register confirm email
 # Compare the confirm code in the link and the confirm code in data base
@@ -143,6 +146,7 @@ def confirm(username, code):
     else:
         abort(404)
 
+
 @user_app.route('/forgot', methods=('GET', 'POST'))
 def forgot():
     error = None
@@ -152,7 +156,7 @@ def forgot():
         user = User.objects.filter(email=form.email.data.lower()).first()
         if user:
             code = str(uuid.uuid4())
-            user.change_configuration={
+            user.change_configuration = {
                 "password_reset_code": code
             }
             user.save()
@@ -160,10 +164,11 @@ def forgot():
             # email the user
             body_html = render_template('mail/user/password_reset.html', user=user)
             body_text = render_template('mail/user/password_reset.txt', user=user)
-            send_email(user.email, "Password reset request", body_html, body_text)
+            send_email("Password reset request", user.email, None, body_html, body_text, None)
 
         message = "You will receive a password reset email if we find that email in our system"
     return render_template('user/forgot.html', form=form, error=error, message=message)
+
 
 @user_app.route('/password_reset/<username>/<code>', methods=('GET', 'POST'))
 def password_reset(username, code):
@@ -190,12 +195,13 @@ def password_reset(username, code):
             return redirect(url_for('user_app.password_reset_complete'))
 
     return render_template('user/password_reset.html',
-        form=form,
-        message=message,
-        require_current=require_current,
-        username=username,
-        code=code
-    )
+                           form=form,
+                           message=message,
+                           require_current=require_current,
+                           username=username,
+                           code=code
+                           )
+
 
 @user_app.route('/password_reset_complete')
 def password_reset_complete():

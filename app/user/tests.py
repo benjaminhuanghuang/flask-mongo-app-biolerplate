@@ -16,7 +16,7 @@ class UserTest(unittest.TestCase):
 
     def tearDown(self):
         db = _get_db()
-        # db.client.drop_database(db)
+        db.client.drop_database(db)
 
     def user_dict(self):
         return dict(
@@ -57,7 +57,7 @@ class UserTest(unittest.TestCase):
         user['email'] = "test2@example.com"
         rv = self.test_client.post('/register', data=user, follow_redirects=True)
         # confirm the user
-        user = User.objects.get(username=self.user_dict()['username'])
+        user = User.objects.get(username=user['username'])
         code = user.change_configuration.get('confirmation_code')
         rv = self.test_client.get('/confirm/' + user.username + '/' + code)
         assert "Your email has been confirmed" in str(rv.data)
@@ -67,7 +67,7 @@ class UserTest(unittest.TestCase):
         assert rv.status_code == 404
 
         # check change configuration is empty
-        user = User.objects.get(username=self.user_dict()['username'])
+        user = User.objects.get(username=user['username'])
         assert user.change_configuration == {}
 
     # @unittest.skip("skipping")
@@ -84,7 +84,7 @@ class UserTest(unittest.TestCase):
             rv = c.get('/')
             assert session.get('username') == self.user_dict()['username']
 
-    @unittest.skip("skipping")
+    # @unittest.skip("skipping")
     def test_edit_profile(self):
         # create a user
         self.test_client.post('/register', data=self.user_dict())
@@ -154,7 +154,7 @@ class UserTest(unittest.TestCase):
         rv = self.test_client.post('/edit', data=user)
         assert "Username already exists" in str(rv.data)
 
-    @unittest.skip("skipping")
+    # @unittest.skip("skipping")
     def test_get_profile(self):
         # create a user
         self.test_client.post('/register', data=self.user_dict())
