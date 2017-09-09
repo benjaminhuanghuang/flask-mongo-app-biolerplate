@@ -76,3 +76,4 @@ class PasswordResetForm(PasswordBaseForm):
         [validators.DataRequired(),
         validators.Length(min=4, max=80)]
     )
+
