@@ -42,7 +42,7 @@ class UserTest(unittest.TestCase):
         rv = self.test_client.post('/register', data=user2, follow_redirects=True)
         assert "Invalid username" in str(rv.data)
 
-    @unittest.skip("skipping")
+    # @unittest.skip("skipping")
     def test_register_user_lowercase(self):
         # Is username being saved in lowercase?
         user3 = self.user_dict()
@@ -167,7 +167,7 @@ class UserTest(unittest.TestCase):
         rv = self.test_client.get('/noexist')
         assert rv.status_code == 404
 
-    @unittest.skip("skipping")
+    # @unittest.skip("skipping")
     def test_forgot_password(self):
         # create a user
         self.test_client.post('/register', data=self.user_dict())
