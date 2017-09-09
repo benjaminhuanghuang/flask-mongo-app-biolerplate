@@ -1,7 +1,6 @@
-flask
-flask-script
-flask-mongoengine  # ORM
-flask-wtf
-py-bcrypt   # encrypt user password
-bleach   # clean html string
+Flask
+Flask-Script
+flask-mongoengine
+Flask-WTF
+py-bcrypt
 blinker
