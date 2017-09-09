@@ -6,3 +6,4 @@
 *.pyc
 /tmp
 __pycache__
+/app/static/images/

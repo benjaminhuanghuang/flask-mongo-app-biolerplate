@@ -1,10 +1,14 @@
-from flask import Blueprint, render_template, request, redirect, session, url_for, abort
+import os
+from werkzeug.utils import secure_filename
+
+from flask import Blueprint, render_template, request, redirect, session, url_for, abort, current_app
 import bcrypt
 import uuid  # for user resigistration email confirm
 #
 from .models import User
 from .forms import RegisterForm, LoginForm, EditForm, ForgotForm, PasswordResetForm
 from ..utilities.emailsender import send_email
+from ..utilities.imaging import thumbnail_process
 
 user_app = Blueprint('user_app', __name__)
 
@@ -92,6 +96,16 @@ def edit():
     if user:
         form = EditForm(obj=user)
         if form.validate_on_submit():
+            # check image
+            image_url = None
+            if request.files.get('image'):
+                filename = secure_filename(form.image.data.filename)
+                # save image
+                file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'user', filename)
+                form.image.data.save(file_path)
+                # create thumbnail and url
+                image_url = str(thumbnail_process(file_path, 'user', str(user.id)))
+
             if user.username != form.username.data.lower():
                 if User.objects.filter(username=form.username.data.lower()).first():
                     error = "Username already exists"
@@ -121,10 +135,12 @@ def edit():
 
             if not error:
                 form.populate_obj(user)
+                if image_url:
+                    user.avatar = image_url
                 user.save()
                 if not message:  # Important! do not overwrite email confirm message
                     message = "Profile updated"
-        return render_template("user/edit.html", form=form, error=error, message=message)
+        return render_template("user/edit.html", form=form, error=error, message=message, user=user)
     else:
         abort(404)
 
@@ -206,7 +222,7 @@ def password_reset_complete():
 
 @user_app.route('/change_password', methods=('GET', 'POST'))
 def change_password():
-    require_current = True   #
+    require_current = True  #
     error = None
     form = PasswordResetForm()
     # Search current in database

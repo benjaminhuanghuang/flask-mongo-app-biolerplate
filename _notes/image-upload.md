@@ -12,7 +12,12 @@
     >>>    print(img.size)
     
 ```
-## Form and template
+## View/routes, Form and template
+    - Routes of /edit
+    ```
+    ```
+    
+    - From
     ```
     from flask_wtf.file import FileField, FileAllowed
     
@@ -22,7 +27,7 @@
             'Only JPEG, PNG and GIFs allowed')
             ])
     ```
-    All sending files through html form
+    - In template, allow sending files through html form
     ```
     <form method="POST" action="{{ url_for('.edit')}}" role="form" enctype="multipart/form-data">
     ```
