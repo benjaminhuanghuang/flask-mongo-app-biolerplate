@@ -11,15 +11,15 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 
 
-def send_email(subject, recipients, bccs, body_html, body_text, attachment):
+def send_email(subject, recipients, bccs, body_html, body_text, attachment=None):
     # don't run this if we're running a test or setting is False
     # if current_app.config.get('TESTING'):
     #     return False
 
-    sender = "Benjamin Huang <support@benjamin.com>"
+    sender = current_app.config['MAIL_DEFAULT_SENDER'] #"Benjamin Huang <support@benjamin.com>"
     msgAlternative = MIMEMultipart('alternative')
     msgAlternative['Subject'] = Header(subject, 'utf-8')
-    msgAlternative['From'] = Header("my name", 'utf-8')  # the sender's email address
+    msgAlternative['From'] = Header(sender, 'utf-8')  # the sender's email address
     msgAlternative['To'] = Header("my friends", 'utf-8')  # the list of all recipients' email addresses
     msgAlternative['Bcc'] = bccs
 
@@ -35,9 +35,9 @@ def send_email(subject, recipients, bccs, body_html, body_text, attachment):
         body_attach.add_header('Content-Disposition', 'attachment', filename='attachment-file')
         msgAlternative.attach(body_attach)
 
-    smtp = smtplib.SMTP(current_app.config)
+    smtp = smtplib.SMTP(current_app.config['MAIL_SERVER'])
     smtp.starttls()
-    smtp.login("afficientatester", "1@11@11@1")
+    smtp.login(current_app.config['MAIL_USERNAME'], current_app.config['MAIL_PASSWORD'])
     smtp.sendmail(sender, recipients, msgAlternative.as_string())
     smtp.quit()
 

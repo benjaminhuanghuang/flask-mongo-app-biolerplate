@@ -13,13 +13,13 @@ class Config:
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_SENDER') or 'nobody@example.com'
+    MAIL_USERNAME = 'afficientatester'
+    MAIL_PASSWORD = "1@11@11@1"
+    MAIL_DEFAULT_SENDER = '<Benjamin>ben@gmail.com'
     MAIL_FLUSH_INTERVAL = 3600  # one hour
     MAIL_ERROR_RECIPIENT = os.environ.get('MAIL_ERROR_RECIPIENT')
 
-    HOSTNAME = "http://localhost"    # used in the email send to user
+    HOSTNAME = "http://localhost:5010"    # used in the email send to user
 
 class DevelopmentConfig(Config):
     DEBUG = True

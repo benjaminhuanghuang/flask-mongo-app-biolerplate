@@ -3,7 +3,7 @@ import bcrypt
 import uuid  # for user resigistration email confirm
 #
 from .models import User
-from .forms import RegisterForm, LoginForm, EditForm
+from .forms import RegisterForm, LoginForm, EditForm, ForgotForm, PasswordResetForm
 from ..utilities.emailsender import send_email
 
 user_app = Blueprint('user_app', __name__)
@@ -29,9 +29,9 @@ def register():
             }
         )
         # email user
-        body_html = render_template('mail/user/register.html', user)
-        body_text = render_template('mail/user/register.txt', user)
-        send_email("Welcome to my flask app boilerplate", user.email, None, body_html, body_text)
+        body_html = render_template('mail/user/register.html', user=user)
+        body_text = render_template('mail/user/register.txt', user=user)
+        send_email("Welcome to my flask app boilerplate", user.email, None, body_html, body_text, None)
 
         user.save()
         return "User registered"
@@ -110,3 +110,78 @@ def edit():
         return render_template("user/edit.html", form=form, error=error, message=message)
     else:
         abort(404)
+
+# Response the confirm link in the register confirm email
+# Compare the confirm code in the link and the confirm code in data base
+# Set user.email_confirmed
+# Display email_confirm page
+@user_app.route('/confirm/<username>/<code>', methods=('GET', 'POST'))
+def confirm(username, code):
+    user = User.objects.filter(username=username).first()
+    if user and user.change_configuration and user.change_configuration.get('confirmation_code'):
+        if code == user.change_configuration.get('confirmation_code'):
+            user.email = user.change_configuration.get('new_email')
+            user.change_configuration = {}
+            user.email_confirmed = True
+            user.save()
+            return render_template('user/email_confirmed.html')
+    else:
+        abort(404)
+
+@user_app.route('/forgot', methods=('GET', 'POST'))
+def forgot():
+    error = None
+    message = None
+    form = ForgotForm()
+    if form.validate_on_submit():
+        user = User.objects.filter(email=form.email.data.lower()).first()
+        if user:
+            code = str(uuid.uuid4())
+            user.change_configuration={
+                "password_reset_code": code
+            }
+            user.save()
+
+            # email the user
+            body_html = render_template('mail/user/password_reset.html', user=user)
+            body_text = render_template('mail/user/password_reset.txt', user=user)
+            send_email(user.email, "Password reset request", body_html, body_text)
+
+        message = "You will receive a password reset email if we find that email in our system"
+    return render_template('user/forgot.html', form=form, error=error, message=message)
+
+@user_app.route('/password_reset/<username>/<code>', methods=('GET', 'POST'))
+def password_reset(username, code):
+    message = None
+    require_current = None
+
+    form = PasswordResetForm()
+
+    user = User.objects.filter(username=username).first()
+    if not user or code != user.change_configuration.get('password_reset_code'):
+        abort(404)
+
+    if request.method == 'POST':
+        del form.current_password
+        if form.validate_on_submit():
+            salt = bcrypt.gensalt()
+            hashed_password = bcrypt.hashpw(form.password.data, salt)
+            user.password = hashed_password
+            user.change_configuration = {}
+            user.save()
+
+            if session.get('username'):
+                session.pop('username')
+            return redirect(url_for('user_app.password_reset_complete'))
+
+    return render_template('user/password_reset.html',
+        form=form,
+        message=message,
+        require_current=require_current,
+        username=username,
+        code=code
+    )
+
+@user_app.route('/password_reset_complete')
+def password_reset_complete():
+    return render_template('user/password_change_confirmed.html')

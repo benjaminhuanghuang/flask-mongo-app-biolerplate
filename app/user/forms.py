@@ -25,6 +25,14 @@ class BaseUserForm(FlaskForm):
         validators=[validators.Length(max=160)]
     )
 
+class PasswordBaseForm(FlaskForm):
+    password = PasswordField('New Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match'),
+        validators.length(min=4, max=80)
+        ])
+    confirm = PasswordField('Repeat Password')
+
 class RegisterForm(BaseUserForm):
     password = PasswordField('New Password', [
         validators.DataRequired(),
@@ -55,3 +63,16 @@ class LoginForm(FlaskForm):
 
 class EditForm(BaseUserForm):
     pass
+
+
+
+class ForgotForm(FlaskForm):
+    email = EmailField('Email address',
+        [validators.DataRequired(), validators.Email()]
+    )
+
+class PasswordResetForm(PasswordBaseForm):
+    current_password = PasswordField('Current Password',
+        [validators.DataRequired(),
+        validators.Length(min=4, max=80)]
+    )
