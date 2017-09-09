@@ -29,3 +29,12 @@
     {{ render_field(form.username, class='form-control') }}
      
     ```
+    
+## Test by using flask script
+    ```
+    python manage.py shell
+    >>> from user.models import User
+    >>> user = User.object.first()
+    >>> from flask import render_template
+    >>> body_html = render_template('/user/register.html', user=user)
+    ```

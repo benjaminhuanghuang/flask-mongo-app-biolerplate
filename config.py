@@ -5,6 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 't0p s3cr3t'
+
     MONGODB_SETTINGS = {
         'host': 'mongodb://admin:admin1234@ds119618.mlab.com:19618/db_todo'
     }
@@ -18,6 +19,7 @@ class Config:
     MAIL_FLUSH_INTERVAL = 3600  # one hour
     MAIL_ERROR_RECIPIENT = os.environ.get('MAIL_ERROR_RECIPIENT')
 
+    HOSTNAME = "http://localhost"    # used in the email send to user
 
 class DevelopmentConfig(Config):
     DEBUG = True

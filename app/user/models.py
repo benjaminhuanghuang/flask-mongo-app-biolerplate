@@ -11,7 +11,9 @@ class User(db.Document):
     last_name = db.StringField(db_field="last_name", max_length=50)
     created_at = db.IntField(db_field="created_at", default=utc_now_ts())
     bio = db.StringField(db_field="bio", max_length=160)
+    # confirm user email after register
     email_confirmed = db.BooleanField(db_field="email_confirmed", default=False)
+    # the files will be changed and need confirm
     change_configuration = db.DictField(db_field="change_config")
     avatar = db.StringField(db_field="avatar", default=None)
 

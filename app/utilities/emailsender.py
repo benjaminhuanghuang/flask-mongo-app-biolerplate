@@ -1,13 +1,15 @@
-# from flask import current_app
+from flask import current_app
 
 # Import smtplib for the actual sending function
 import smtplib
 
 # Here are the email package modules we'll need
+from email.header import Header
 # from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
+
 
 def send_email(subject, recipients, bccs, body_html, body_text, attachment):
     # don't run this if we're running a test or setting is False
@@ -15,34 +17,35 @@ def send_email(subject, recipients, bccs, body_html, body_text, attachment):
     #     return False
 
     sender = "Benjamin Huang <support@benjamin.com>"
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = subject
-    msg['From'] = sender  # the sender's email address
-    msg['To'] = recipients  # the list of all recipients' email addresses
-    msg['Bcc'] = bccs
+    msgAlternative = MIMEMultipart('alternative')
+    msgAlternative['Subject'] = Header(subject, 'utf-8')
+    msgAlternative['From'] = Header("my name", 'utf-8')  # the sender's email address
+    msgAlternative['To'] = Header("my friends", 'utf-8')  # the list of all recipients' email addresses
+    msgAlternative['Bcc'] = bccs
 
+    content_text = MIMEText(body_text, 'plain', "utf-8")
+    msgAlternative.attach(content_text)
     content_html = MIMEText(body_html, 'html', "utf-8")
-    msg.attach(content_html)
+    msgAlternative.attach(content_html)
 
-    # text_html = MIMEText(body_text, 'html', "utf-8")
-    # msg.attach(text_html)
+
 
     if attachment:
         body_attach = MIMEApplication(attachment)
         body_attach.add_header('Content-Disposition', 'attachment', filename='attachment-file')
-        msg.attach(body_attach)
+        msgAlternative.attach(body_attach)
 
-    smtp = smtplib.SMTP('smtp.gmail.com:587')
+    smtp = smtplib.SMTP(current_app.config)
     smtp.starttls()
     smtp.login("afficientatester", "1@11@11@1")
-    smtp.sendmail(sender, recipients,"test")
+    smtp.sendmail(sender, recipients, msgAlternative.as_string())
     smtp.quit()
 
 
 if __name__ == "__main__":
-    body_html = "<HTML><BODY><h1>Hello</BODY></HTML>"
-    body_text = "Hello"
-    subject = "I'am ben"
+    body_html = "<HTML><BODY><h1>Hello</h1></BODY></HTML>"
+    body_text = "The message"
+    subject = "The subject"
     recipients = ['huang.huang@afficienta.com', 'benjaminhuanghuang@gmail.com']
     send_email(subject, recipients, None, body_html, body_text, None)
     print("done....")
