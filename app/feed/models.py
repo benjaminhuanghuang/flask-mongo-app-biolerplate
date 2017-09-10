@@ -1,12 +1,11 @@
 from mongoengine import CASCADE
-from flask import url_for
+from flask import url_for, current_app
 import os
 
 from app import db
-from ..utilities.timing import utc_now_ts
+from ..utilities.timing import utc_now_ts_ms as now
 from ..user.models import User
-from utilities.common import linkify, ms_stamp_humanize
-from settings import STATIC_IMAGE_URL, AWS_BUCKET, AWS_CONTENT_URL
+from ..utilities.common import linkify, ms_stamp_humanize
 
 POST = 1
 COMMENT = 2
@@ -23,7 +22,7 @@ class Message(db.Document):
     to_user = db.ReferenceField(User, db_field="tu", default=None, reverse_delete_rule=CASCADE)
     text = db.StringField(db_field="t", max_length=1024)
     live = db.BooleanField(db_field="l", default=None)
-    create_date = db.LongField(db_field="c", default=utc_now_ts())
+    create_date = db.LongField(db_field="c", default=now())
     parent = db.ObjectIdField(db_field="p", default=None)
     images = db.ListField(db_field="ii")
     message_type = db.IntField(db_field='mt', default=POST, choices=MESSAGE_TYPE)
@@ -45,10 +44,7 @@ class Message(db.Document):
         return Message.objects.filter(parent=self.id, message_type=LIKE).order_by('-create_date')
 
     def post_imgsrc(self, image_ts, size):
-        if AWS_BUCKET:
-            return os.path.join(AWS_CONTENT_URL, AWS_BUCKET, 'posts', '%s.%s.%s.png' % (self.id, image_ts, size))
-        else:
-            return url_for('static', filename=os.path.join(STATIC_IMAGE_URL, 'posts', '%s.%s.%s.png' % (self.id, image_ts, size)))
+            return url_for('static', filename=os.path.join('images', 'posts', '%s.%s.%s.png' % (self.id, image_ts, size)))
 
     meta = {
         'indexes': [('from_user', 'to_user', '-create_date', 'parent', 'message_type', 'live')]
