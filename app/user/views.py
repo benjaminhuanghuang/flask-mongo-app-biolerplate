@@ -81,13 +81,13 @@ def logout():
 
 
 @user_app.route('/<username>/friends/<int:page>')
-@user_app.route('/<username>/friends', endpoint='profile-friends')
+@user_app.route('/<username>/friends', endpoint='profile-friends')  # the url alias is "profile-friends"
 @user_app.route('/<username>')
 def profile(username, page=1):
     logged_user = None
     edit_profile = False
     rel = None
-    friends_page = False
+    friends_page = False   #
     user = User.objects.filter(username=username).first()
 
     if user:
