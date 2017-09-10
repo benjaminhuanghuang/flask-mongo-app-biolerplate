@@ -64,7 +64,23 @@
     ```
         - troubleshooting 
             In test cases(unit-testing), Django pre_save signal can not be caught
-
+    
+    - Helper class function
+    ```
+    @staticmethod
+    def get_relationship(from_user, to_user):
+        rel = Relationship.objects.filter(
+            from_user=from_user,
+            to_user=to_user
+        ).first()
+        if rel and rel.rel_type == Relationship.FRIENDS:
+            if rel.status == Relationship.PENDING:
+                return "FRIENDS_PENDING"
+            if rel.status == Relationship.APPROVED:
+                return "FRIENDS_APPROVED"
+        elif rel and rel.rel_type == Relationship.BLOCKED:
+            return "BLOCKED"
+    ```
 
    - add index
    ```

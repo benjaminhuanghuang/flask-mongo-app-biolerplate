@@ -4,6 +4,7 @@ from app import db
 from ..utilities.timing import utc_now_ts
 from ..user.models import User
 
+
 # Relationship between users
 class Relationship(db.Document):
     FRIENDS = 1
@@ -29,10 +30,24 @@ class Relationship(db.Document):
     req_date = db.IntField(db_field='rd', default=utc_now_ts())
     approved_date = db.IntField(db_field="ad", default=0)
 
-    meta = {
-        'indexes': [('from_user', 'to_user'), ('from_user', 'to_user', 'rel_type', 'status')]
-    }
+    @staticmethod
+    def get_relationship(from_user, to_user):
+        rel = Relationship.objects.filter(
+            from_user=from_user,
+            to_user=to_user
+        ).first()
+        if rel and rel.rel_type == Relationship.FRIENDS:
+            if rel.status == Relationship.PENDING:
+                return "FRIENDS_PENDING"
+            if rel.status == Relationship.APPROVED:
+                return "FRIENDS_APPROVED"
+        elif rel and rel.rel_type == Relationship.BLOCKED:
+            return "BLOCKED"
 
+
+meta = {
+    'indexes': [('from_user', 'to_user'), ('from_user', 'to_user', 'rel_type', 'status')]
+}
 
 '''
     python manage.py shell

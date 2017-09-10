@@ -9,6 +9,7 @@ from .models import User
 from .forms import RegisterForm, LoginForm, EditForm, ForgotForm, PasswordResetForm
 from ..utilities.emailsender import send_email
 from ..utilities.imaging import thumbnail_process
+from ..relationship.models import Relationship
 
 user_app = Blueprint('user_app', __name__)
 
@@ -83,7 +84,10 @@ def profile(username):
     if user and session.get('username') and user.username == session.get('username'):
         edit_profile = True
     if user:
-        return render_template('user/profile.html', user=user, edit_profile=edit_profile)
+        if session.get('username'):
+            logged_user = User.objects.filter(username=session.get('username')).first()
+            rel = Relationship.get_relationship(logged_user, user)
+        return render_template('user/profile.html', user=user, rel=rel, edit_profile=edit_profile)
     else:
         abort(404)
 
