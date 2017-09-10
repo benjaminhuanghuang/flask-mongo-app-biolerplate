@@ -1,8 +1,9 @@
-from flask import Blueprint, abort, session, redirect, url_for
+from flask import Blueprint, abort, session, redirect, url_for, render_template, request
 #
 from ..user.models import User
 from .models import Relationship
 from ..user.decorators import login_required
+from ..utilities.emailsender import send_email
 
 relationship_app = Blueprint('relationship_app', __name__)
 
@@ -33,6 +34,23 @@ def add_friend(to_username):
                          rel_type=Relationship.FRIENDS,
                          status=Relationship.PENDING
                          ).save()
+
+            # email the user
+            body_html = render_template(
+                'mail/relationship/added_friend.html',
+                from_user=logged_user,
+                to_user=to_user,
+            )
+            body_text = render_template(
+                'mail/relationship/added_friend.txt',
+                from_user=logged_user,
+                to_user=to_user,
+            )
+            send_email(("%s has requested to be friends") % logged_user.first_name,
+                       to_user.email,
+                       None,
+                       body_html,
+                       body_text, None)
         return redirect(url_for('user_app.profile', username=to_username))
     else:
         abort(404)
@@ -41,6 +59,7 @@ def add_friend(to_username):
 @relationship_app.route('/remove_friend/<to_username>')
 @login_required
 def remove_friend(to_username):
+    ref = request.referrer
     logged_user = User.objects.filter(username=session.get('username')).first()
     to_user = User.objects.filter(username=to_username).first()
 
@@ -54,7 +73,7 @@ def remove_friend(to_username):
             reverse_rel = Relationship.objects.filter(
                 from_user=to_user,
                 to_user=logged_user).delete()
-        return redirect(url_for('user_app.profile', username=to_username))
+        return redirect(ref)
     else:
         abort(404)
 
