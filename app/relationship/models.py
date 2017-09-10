@@ -38,6 +38,8 @@ class Relationship(db.Document):
 
     @staticmethod
     def get_relationship(from_user, to_user):
+        if from_user == to_user:
+            return "SAME"
         rel = Relationship.objects.filter(from_user=from_user, to_user=to_user).first()
         if rel and rel.rel_type == Relationship.FRIENDS:
             if rel.status == Relationship.PENDING:
