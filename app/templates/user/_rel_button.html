@@ -29,25 +29,25 @@
     {% if rel == "FRIENDS_APPROVED" %}
         <a href="{{ url_for('relationship_app.remove_friend', to_username=user.username) }}" role="button"
            class="relationship-friends btn btn-primary">
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span id="relationship-label">Friends</span>
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class="relationship-label">Friends</span>
         </a>
     {% endif %}
 
     {% if rel == "FRIENDS_PENDING" %}
         <a href="{{ url_for('relationship_app.remove_friend', to_username=user.username) }}" role="button"
            class="relationship-friends-requested btn btn-primary">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span id="relationship-label">Friendship Requested</span>
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="relationship-label">Friendship Requested</span>
         </a>
     {% endif %}
 
     {% if rel == "REVERSE_FRIENDS_PENDING" %}
         <a href="{{ url_for('relationship_app.add_friend', to_username=user.username) }}" role="button"
            class="relationship-reverse-friends-requested btn btn-primary">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span id="relationship-label">Accept Friendship</span>
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="relationship-label">Accept Friendship</span>
         </a>
         <a href="{{ url_for('relationship_app.remove_friend', to_username=user.username) }}" role="button"
            class="relationship-reverse-friends-cancel btn btn-default">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <span id="relationship-label">Deny Friendship</span>
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <span class="relationship-label">Deny Friendship</span>
         </a>
     {% endif %}
 
@@ -60,6 +60,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.relationship-friends').mouseover(function () {
+                console.log("eeeee");
                 $(this).find('.relationship-label').text('Unfriend');
                 $(this).attr("class", "btn btn-default");
             }).mouseout(function () {

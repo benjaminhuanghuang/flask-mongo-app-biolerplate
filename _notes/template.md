@@ -16,7 +16,7 @@
       <h1>Hello, Bootstrap</h1>
     {% endblock %}
     ```
-## Template macro
+## Reuse  component and Template macro  
     ```
     {% macro render_field(field) %}
   
@@ -29,6 +29,12 @@
     {{ render_field(form.username, class='form-control') }}
      
     ```
+    
+    ```
+    {% extends "base.html" %}
+    {% from "user/_rel_button.html" import rel_button, rel_js %}
+    ```
+
 ## Show message and error
     Create message and error in views/routes
     ```
