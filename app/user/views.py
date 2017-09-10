@@ -83,6 +83,7 @@ def logout():
 @user_app.route('/<username>', methods=('GET', 'POST'))
 def profile(username):
     edit_profile = False
+    rel = None
     user = User.objects.filter(username=username).first()
     if user and session.get('username') and user.username == session.get('username'):
         edit_profile = True
