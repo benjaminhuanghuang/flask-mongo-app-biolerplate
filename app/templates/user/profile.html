@@ -192,5 +192,14 @@
                 $(this).attr("class", "btn btn-danger");
             });
         });
+        $(document).ready(function () {
+            $('#relationship-friends-requested').mouseover(function () {
+                $(this).find('#relationship-label').text('Cancel Friend Request');
+                $(this).attr("class", "btn btn-danger");
+            }).mouseout(function () {
+                $(this).find('#relationship-label').text('Friendship Requested');
+                $(this).attr("class", "btn btn-primary");
+            });
+        });
     </script>
 {% endblock %}
