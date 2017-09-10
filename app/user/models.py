@@ -25,7 +25,10 @@ class User(db.Document):
         document.email = document.email.lower()
 
     def profile_imgsrc(self, size):
-        return os.path.join("images", 'user', '%s.%s.%s.png' % (self.id, self.avatar, size))
+        if self.avatar:
+            return url_for('static', filename=os.path.join('images', 'user', '%s.%s.%s.png' % (self.id, self.avatar, size)))
+        else:
+            return url_for('static', filename=os.path.join('images', 'user', 'no-profile.%s.png' % (size)))
 
     meta = {
         'indexes': ['username', 'email', '-created_at']

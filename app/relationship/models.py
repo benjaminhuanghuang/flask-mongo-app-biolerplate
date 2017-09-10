@@ -30,6 +30,12 @@ class Relationship(db.Document):
     req_date = db.IntField(db_field='rd', default=utc_now_ts())
     approved_date = db.IntField(db_field="ad", default=0)
 
+    def is_friend(self, user):
+        if user:
+            return self.get_relationship(user, self.to_user)
+        else:
+            return None
+
     @staticmethod
     def get_relationship(from_user, to_user):
         rel = Relationship.objects.filter(from_user=from_user, to_user=to_user).first()
