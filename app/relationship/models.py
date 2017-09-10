@@ -4,7 +4,7 @@ from app import db
 from ..utilities.timing import utc_now_ts
 from ..user.models import User
 
-
+# Relationship between users
 class Relationship(db.Document):
     FRIENDS = 1
     BLOCKED = -1
@@ -32,3 +32,18 @@ class Relationship(db.Document):
     meta = {
         'indexes': [('from_user', 'to_user'), ('from_user', 'to_user', 'rel_type', 'status')]
     }
+
+
+'''
+    python manage.py shell
+
+    from user.models import *
+    from relationship.models import *
+    user1 = User.objects.get(username='u1')
+    user2 = User.objects.get(username='u2')
+    friends = Relationship(from_user=u1, to_user=u2, rel_type=Relationship.FRIENDS, status=Relationship.PENDING).save()
+
+    db.relationship.find()
+    db.relationship.getIndexes()
+
+'''
