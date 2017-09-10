@@ -32,10 +32,7 @@ class Relationship(db.Document):
 
     @staticmethod
     def get_relationship(from_user, to_user):
-        rel = Relationship.objects.filter(
-            from_user=from_user,
-            to_user=to_user
-        ).first()
+        rel = Relationship.objects.filter(from_user=from_user, to_user=to_user).first()
         if rel and rel.rel_type == Relationship.FRIENDS:
             if rel.status == Relationship.PENDING:
                 return "FRIENDS_PENDING"
@@ -43,11 +40,19 @@ class Relationship(db.Document):
                 return "FRIENDS_APPROVED"
         elif rel and rel.rel_type == Relationship.BLOCKED:
             return "BLOCKED"
+        else:
+            reverse_rel = Relationship.objects.filter(from_user=to_user, to_user=from_user).first()
+            if reverse_rel and reverse_rel.rel_type == Relationship.FRIENDS:
+                if reverse_rel.status == Relationship.PENDING:
+                    return "REVERSE_FRIENDS_PENDING"
+                elif reverse_rel and reverse_rel.rel_type == Relationship.BLOCKED:
+                    return "REVERSE_BLOCKED"
+            return None
 
+    meta = {
+        'indexes': [('from_user', 'to_user'), ('from_user', 'to_user', 'rel_type', 'status')]
+    }
 
-meta = {
-    'indexes': [('from_user', 'to_user'), ('from_user', 'to_user', 'rel_type', 'status')]
-}
 
 '''
     python manage.py shell

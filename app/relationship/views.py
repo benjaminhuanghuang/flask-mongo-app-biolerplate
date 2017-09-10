@@ -27,7 +27,7 @@ def add_friend(to_username):
                 to_user=logged_user)
             reverse_rel.status = Relationship.APPROVED
             reverse_rel.save()
-        elif rel == None and rel != "REVERSE_BLOCKED":
+        elif rel == None and rel != "REVERSE_BLOCKED":  # "FRIENDS_PENDING" or "BLOCKED" or "FRIENDS_APPROVED"
             Relationship(from_user=logged_user,
                          to_user=to_user,
                          rel_type=Relationship.FRIENDS,
@@ -36,6 +36,7 @@ def add_friend(to_username):
         return redirect(url_for('user_app.profile', username=to_username))
     else:
         abort(404)
+
 
 @relationship_app.route('/remove_friend/<to_username>')
 @login_required
@@ -56,6 +57,7 @@ def remove_friend(to_username):
         return redirect(url_for('user_app.profile', username=to_username))
     else:
         abort(404)
+
 
 @relationship_app.route('/block/<to_username>')
 @login_required
@@ -79,10 +81,11 @@ def block(to_username):
             to_user=to_user,
             rel_type=Relationship.BLOCKED,
             status=Relationship.APPROVED
-            ).save()
+        ).save()
         return redirect(url_for('user_app.profile', username=to_username))
     else:
         abort(404)
+
 
 @relationship_app.route('/unblock/<to_username>')
 @login_required
