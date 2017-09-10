@@ -28,7 +28,7 @@
 
                 <div class="btn-toolbar pull-right" role="toolbar" aria-label="friends-toolbar">
                     <div class="btn-group" role="group" aria-label="friends-toolbar-buttons">
-                         {{ rel_button(rel, user) }}
+                        {{ rel_button(rel, user) }}
                     </div> <!--btn-group-->
                 </div><!--btn-toolbar-->
 
@@ -154,16 +154,18 @@
                             <div class="col-md-6 pull-left">
                                 {% if friends.has_prev %}
                                     <a role="button" class="btn btn-primary"
-                                       href="{{ url_for('.profile-friends-page', username=user.username, page=friends.prev_num) }}"><
-                                        Previous</a>
+                                       href="{{ url_for('.profile-friends-page', username=user.username, page=friends.prev_num) }}">
+                                        < Previous
+                                    </a>
                                 {% endif %}
                             </div> <!-- col-md-6 -->
 
                             <div class="col-md-6 pull-right">
                                 {% if friends.has_next %}
                                     <a class="btn btn-primary"
-                                       href="{{ url_for('.profile-friends-page', username=user.username, page=friends.next_num) }}">Next
-                                        ></a>
+                                       href="{{ url_for('.profile-friends-page', username=user.username, page=friends.next_num) }}">
+                                        Next>
+                                    </a>
                                 {% endif %}
                             </div> <!-- col-md-6 -->
 
