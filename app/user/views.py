@@ -11,6 +11,9 @@ from ..utilities.emailsender import send_email
 from ..utilities.imaging import thumbnail_process
 from ..relationship.models import Relationship
 
+from ..relationship.models import Relationship
+from .decorators import login_required
+
 user_app = Blueprint('user_app', __name__)
 
 
@@ -93,6 +96,7 @@ def profile(username):
 
 
 @user_app.route('/edit', methods=('GET', 'POST'))
+@login_required
 def edit():
     error = None
     message = None
