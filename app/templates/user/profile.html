@@ -34,7 +34,7 @@
                         {% else %}
                             {% if rel == None %}
                                 <a href="{{ url_for('relationship_app.add_friend', to_username=user.username) }}"
-                                   role="button" class="btn btn-default">
+                                   role="button" id="relationship-add-friend" class="btn btn-default">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Friend
                                 </a>
                                 <a href="{{ url_for('relationship_app.block', to_username=user.username) }}"
@@ -78,6 +78,9 @@
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <span
                                         id="relationship-label">Deny Friendship</span>
                                 </a>
+                            {% endif %}
+                            {% if rel == "REVERSE_BLOCKED" %}
+                                <a href="#" id="relationship-reverse-blocked"></a>
                             {% endif %}
                         {% endif %}
                     </div> <!--btn-group-->
