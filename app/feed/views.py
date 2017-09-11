@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, redirect, url_for, abort, render_template
+from flask import Blueprint, request, session, redirect, url_for, abort, render_template, current_app
 from werkzeug.utils import secure_filename
 import os
 
@@ -24,7 +24,7 @@ def add_message():
         if uploaded_files and uploaded_files[0].filename != '':
             for file in uploaded_files:
                 filename = secure_filename(file.filename)
-                file_path = os.path.join(UPLOAD_FOLDER, 'posts', filename)
+                file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'posts', filename)
                 file.save(file_path)
                 post_images.append(file_path)
                 
