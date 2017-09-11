@@ -16,6 +16,7 @@ def utc_now_str():
     # time.gmtime Convert a time expressed in seconds since the epoch to a struct_time in UTC
     return time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(time.time()))
 
+# time in ms since epoch
 def utc_now_ts_ms():
     return lambda: int(round(time.time() * 1000))
 

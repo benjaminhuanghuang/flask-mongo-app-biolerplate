@@ -1,5 +1,6 @@
 import os
 from werkzeug.utils import secure_filename
+from mongoengine import Q
 
 from flask import Blueprint, render_template, request, redirect, session, url_for, abort, current_app
 import bcrypt
@@ -13,6 +14,10 @@ from ..relationship.models import Relationship
 
 from ..relationship.models import Relationship
 from .decorators import login_required
+
+# display fee form in profile view
+from ..feed.forms import FeedPostForm
+from ..feed.models import Message, POST
 
 user_app = Blueprint('user_app', __name__)
 
@@ -108,6 +113,15 @@ def profile(username, page=1):
         else:
             friends = friends[:5]
 
+        form = FeedPostForm()
+
+        # get user messages if friends or self
+        if logged_user and (rel == "SAME" or rel == "FRIENDS_APPROVED"):
+            profile_messages = Message.objects.filter(
+                Q(from_user=user) | Q(to_user=user),
+                message_type=POST
+                ).order_by('-create_date')[:10]
+
         return render_template('user/profile.html',
             user=user,
             logged_user=logged_user,
@@ -115,6 +129,8 @@ def profile(username, page=1):
             friends=friends,
             friends_total=friends_total,
             friends_page=friends_page,
+            form=form,
+            profile_messages=profile_messages
             )
     else:
         abort(404)

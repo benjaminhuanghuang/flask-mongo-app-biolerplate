@@ -39,6 +39,9 @@
     ("cursor" : "BasicCursor", "nscannedObjects" : 3,) , it means:
     - The query had to got through 3 records to find the result.
      
+## Mongo query
+    - from mongoengine import Q
+    
 ## Mongo model design
    - create model
     ```
@@ -48,6 +51,18 @@
         username = db.StringField(db_field="u", required=True, unique=True)
 
     ```
+   - Relation
+    Foreign key
+    ```
+    class Message(db.Document):
+        parent = db.ObjectIdField(db_field="parent", default=None)
+    ```
+   - Reverse delete
+    ``` 
+    class Feed(db.Document):
+        user = db.ReferenceField(User, db_field="user", reverse_delete_rule=CASCADE)
+    ```
+
    - pre save hook 
     ```
     # Signal support is provided by the excellent blinker library.
@@ -102,4 +117,4 @@
     
     - Field with choice type 
     
-    - Relation
+    
