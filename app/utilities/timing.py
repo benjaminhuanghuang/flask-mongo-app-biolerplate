@@ -1,5 +1,6 @@
 import time
 import datetime
+import arrow  # formatting and converting dates, times, and timestamps
 
 def utc_now_ts():
     # time() returns the time in seconds since the epoch as a floating point number
@@ -17,6 +18,11 @@ def utc_now_str():
 
 def utc_now_ts_ms():
     return lambda: int(round(time.time() * 1000))
+
+# create string like "an hour ago"
+def ms_stamp_humanize(ts):
+    ts = datetime.datetime.fromtimestamp(ts/1000.0)
+    return arrow.get(ts).humanize()
 
 if __name__ == "__main__":
     print(utc_now_ts())
