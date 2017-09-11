@@ -93,6 +93,7 @@ def profile(username, page=1):
     rel = None
     friends_page = False   #
     user = User.objects.filter(username=username).first()
+    profile_messages = []
 
     if user:
         if session.get('username'):
